@@ -98,9 +98,6 @@ def show_all_users():
 
 # Show balance for a particular user
 def show_balance(username):
-    if not check_user_exists(username):
-        return (403, f"User {username} does not exist.")
-
     conn = create_connection()
     with conn.cursor() as cur:
         cur.execute("SELECT balance FROM users WHERE username=%s", [username])
@@ -110,14 +107,7 @@ def show_balance(username):
 
 # Update balance for a particular user
 def update_balance(username, amount):
-    if not check_user_exists(username):
-        return (403, f"User {username} does not exist.")
-
     conn = create_connection()
     with conn.cursor() as cur:
         cur.execute("UPDATE users SET balance=%s WHERE username=%s;", (amount, username))
     return amount
-
-
-# print(show_all_users())
-# print(show_balance('hidey'))
