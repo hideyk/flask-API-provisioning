@@ -1,6 +1,8 @@
 __pycache__
 db/__pycache__
 .vscode
+.gitignore
+.vagrant
 db/db.yml
 flask-api
 flask.yml

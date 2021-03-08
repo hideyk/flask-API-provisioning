@@ -1,0 +1,7 @@
+controller ansible_connection=local
+app        ansible_host=172.17.177.21 ansible_ssh_private_key_file=/vagrant/.vagrant/machines/app/virtualbox/private_key
+db         ansible_host=172.17.177.22 ansible_ssh_private_key_file=/vagrant/.vagrant/machines/db/virtualbox/private_key
+
+[managed]
+db
+app
