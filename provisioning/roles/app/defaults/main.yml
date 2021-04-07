@@ -1,0 +1,24 @@
+---
+flaskapp_app_name: flaskapp
+
+flaskapp_app_directory: "/opt/{{ flaskapp_app_name }}"
+
+flaskapp_app_packages:
+  - git
+  - libpq-dev
+  - software-properties-common
+  - python3.8-distutils
+  - python3.8-dev
+
+flaskapp_python_version: python3.8
+
+flaskapp_pip_bootstrap_url: https://bootstrap.pypa.io/get-pip.py
+flaskapp_app_repository: https://github.com/hideyukikanazawa/restful-flask-api.git
+
+flaskapp_app_config: flask.yml
+
+postgres_database: upay
+postgres_user: postgres
+postgres_pass: hideyuki1994
+postgres_host: 172.17.177.22
+postgres_port: 5432

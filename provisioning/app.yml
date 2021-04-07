@@ -1,0 +1,8 @@
+---
+
+- name: set-up Flask API and initialize process
+  hosts: app
+  become: true
+  remote_user: root
+  roles:
+    - app

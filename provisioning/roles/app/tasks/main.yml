@@ -1,0 +1,58 @@
+---
+
+- name: Add deadsnakes repo
+  apt_repository: repo="ppa:deadsnakes/ppa"
+  become: true
+
+- name: Download and install newer Python version
+  apt: pkg={{ flaskapp_python_version }} state=present update_cache=yes
+
+- name: Ensure packages required for the Flask application
+  apt: pkg={{ item }} state=present update_cache=yes
+  with_items: '{{ flaskapp_app_packages }}'
+
+- name: Download get-pip bootstrap script
+  get_url: 
+    url: "{{ flaskapp_pip_bootstrap_url }}"
+    dest: /etc/get-pip.py
+
+- name: Install pip3
+  script: /etc/get-pip.py
+  args:
+    executable: "{{ flaskapp_python_version }}"
+
+- name: Ensure app directory
+  file: dest={{ flaskapp_app_directory }} state=directory
+
+- name: Git checkout flask API
+  git:
+    repo={{ flaskapp_app_repository }} dest={{ flaskapp_app_directory }} force=yes
+
+- name: Copy application config to remote
+  copy:
+    src={{ flaskapp_app_config }}
+    dest={{ flaskapp_app_directory }}
+
+- name: Copy db template to remote
+  template:
+    src=db.j2 dest={{ flaskapp_app_directory }}/db/db.yml owner=root group=root mode='0777'
+
+- name: Ensure and upgrade pip
+  pip:
+    name: pip
+    executable: pip3
+    extra_args: "--upgrade"
+
+- name: Pip install wheel package to successfully install psycopg2
+  pip:
+    name: wheel
+    executable: pip3
+
+- name: Pip install packages from requirements.txt
+  pip:
+    requirements: "{{ flaskapp_app_directory }}/requirements.txt"
+    executable: pip3
+    extra_args: "--ignore-installed"
+
+- name: start flask as a background process
+  shell: "nohup {{ flaskapp_python_version }} {{ flaskapp_app_directory }}/app.py > log.txt 2>&1 &"

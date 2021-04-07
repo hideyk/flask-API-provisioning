@@ -1,0 +1,30 @@
+---
+
+- name: install PostgreSQL, start the service and create tables
+  hosts: db
+  become: true
+  vars_files:
+    - group_vars/db
+  roles:
+    - geerlingguy.postgresql
+
+
+# - name: Set-up PostgreSQL tables
+#   hosts: db
+#   become: true
+#   tasks:
+#     - name: Create users table
+#       community.postgresql.postgresql_table:
+#         db: upay
+#         name: users
+#         owner: postgres
+#         columns:
+#           - id integer not null primary key
+#           - username character varying(255)
+#           - firstname  character varying(255)
+#           - lastname character varying(255)
+#           - balance money not null
+#           - phonenumber integer
+#     - name: Change postgres password
+#       community.postgresql.postgresql_user:
+#         db: upay
