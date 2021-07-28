@@ -38,7 +38,7 @@ The API was written initally with the default routing ```@app.get('/')``` conven
 
 You may find more details from my [RESTful Flask API] github repository
 
-<br><br>
+<br>
 
 ---
 
